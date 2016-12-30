@@ -49,7 +49,7 @@ angular.module('starter.controllers', [])
             plotShadow: false
         },
         title: {
-            text: 'Browser market shares at a specific website, 2010'
+            text: 'Browser resource usage at a specific environment, 2016'
         },
         tooltip: {
          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

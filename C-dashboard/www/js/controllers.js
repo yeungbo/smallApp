@@ -253,50 +253,96 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope, $http, Accounts) {
-	alert("AccountCtrl");
-	  Accounts.all($http).success(function(data) {
-		  	$scope.accounts = data
-		  	alert("ii:"+$scope.accounts);
-			alert("jj:"+JSON.stringify($scope.accounts));
-		      });
-	  
-	  var accounts = [{
-		    id: 0,
-		    name: 'Bo',
-		    lastText: 'You on your way?',
-		    face: 'img/ben.png'
-		  }, {
-		    id: 1,
-		    name: 'Max Lynx',
-		    lastText: 'Hey, it\'s me',
-		    face: 'img/max.png'
-		  }, {
-		    id: 2,
-		    name: 'Adam Bradleyson',
-		    lastText: 'I should buy a boat',
-		    face: 'img/adam.jpg'
-		  }, {
-		    id: 3,
-		    name: 'Perry Governor',
-		    lastText: 'Look at my mukluks!',
-		    face: 'img/perry.png'
-		  }, {
-		    id: 4,
-		    name: 'Mike Harrington',
-		    lastText: 'This is wicked good ice cream.',
-		    face: 'img/mike.png'
-		  }];
-	  
-//	$scope.accounts = Accounts.all($http);
-	  $scope.accounts =  accounts;
-	alert($scope.accounts);
-//	alert(JSON.stringify($scope.accounts));
-	  $scope.remove = function(account) {
-		  Accounts.remove(account);
-	  };
-	  
+.controller('AccountCtrl', function($scope, Accounts) {
+//	alert("AccountCtrl");
+	
+	
+	  //饼图
+	 $scope.vlanPieConfig = {
+	
+	  chart: {
+	            plotBackgroundColor: null,
+	            plotBorderWidth: null,
+	            plotShadow: false
+	        },
+	        title: {
+	            text: 'Browser resource usage at a specific environment, 2016'
+	        },
+	        tooltip: {
+	         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    color: '#000000',
+	                    connectorColor: '#000000',
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+	                }
+	            }
+	        },
+	        series: [{
+	            type: 'pie',
+	            name: 'Browser share',
+	            data: [
+	                ['Firefox',   45.0],
+	                ['IE',       26.8],
+	                {
+	                    name: 'Chrome',
+	                    y: 12.8,
+	                    sliced: true,
+	                    selected: true
+	                },
+	                ['Safari',    8.5],
+	                ['Opera',     6.2],
+	                ['Others',   0.7]
+	            ]
+	        }]
+	 };
 //	  Accounts.all($http).success(function(data) {
 //		  	$scope.accounts = data
+//		  	alert("ii:"+$scope.accounts);
+//			alert("jj:"+JSON.stringify($scope.accounts));
 //		      });
+//	  
+//	  var accounts = [{
+//		    id: 0,
+//		    name: 'Bo',
+//		    lastText: 'You on your way?',
+//		    face: 'img/ben.png'
+//		  }, {
+//		    id: 1,
+//		    name: 'Max Lynx',
+//		    lastText: 'Hey, it\'s me',
+//		    face: 'img/max.png'
+//		  }, {
+//		    id: 2,
+//		    name: 'Adam Bradleyson',
+//		    lastText: 'I should buy a boat',
+//		    face: 'img/adam.jpg'
+//		  }, {
+//		    id: 3,
+//		    name: 'Perry Governor',
+//		    lastText: 'Look at my mukluks!',
+//		    face: 'img/perry.png'
+//		  }, {
+//		    id: 4,
+//		    name: 'Mike Harrington',
+//		    lastText: 'This is wicked good ice cream.',
+//		    face: 'img/mike.png'
+//		  }];
+//	  
+////	$scope.accounts = Accounts.all($http);
+//	  $scope.accounts =  accounts;
+//	alert($scope.accounts);
+////	alert(JSON.stringify($scope.accounts));
+//	  $scope.remove = function(account) {
+//		  Accounts.remove(account);
+//	  };
+//	  
+////	  Accounts.all($http).success(function(data) {
+////		  	$scope.accounts = data
+////		      });
 });

@@ -1,17 +1,7 @@
-<ion-view view-title="Account">
-  <ion-content>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="account in accounts" type="item-text-wrap" href="#/tab/account/{{account.id}}">
-        <img ng-src="{{account.face}}">
-        <h2>{{account.name}}</h2>
-        <p>{{account.lastText}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+<ion-view view-title="VLAN">
+  <ion-content class="padding">
+  <!-- vlan status -->
+  <highchart id="vlanPie" config="vlanPieConfig" style="height:300px"></highchart> 
 
-        <ion-option-button class="button-assertive" ng-click="remove(account)">
-          Delete
-        </ion-option-button>
-      </ion-item>
-
-    </ion-list>
   </ion-content>
 </ion-view>

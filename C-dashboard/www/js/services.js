@@ -62,7 +62,7 @@ angular.module('starter.services', [])
 
 .factory('Accounts', function($http) {
   // Might use a resource here that returns a JSON array
-	alert("accounts");
+//	alert("accounts");
 	
 	  return {
 		    all: function($http) {

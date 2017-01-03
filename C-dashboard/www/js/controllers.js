@@ -64,13 +64,18 @@ angular.module('starter.controllers', [])
 	var msgdata ="abc";
 	console.log(msgdata);
 	var defer = $q.defer();
-	$http.get('http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report', {
-	    	headers: {"Content-Type": "application/x-www-form-urlencoded",
-	        "Accept": "application/json",
-	        "Access-Control-Allow-Origin": "*",
-	        "Access-Control-Allow-Headers": "Cache-Control, Pragma, Origin, Authorization,   Content-Type, X-Requested-With",
-	        "Access-Control-Allow-Methods": "GET, PUT, POST"} }
-	    ).success(function (data,status,headers,congfig) {
+//	$http.get('http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report', {
+//	    	headers: {"Content-Type": "application/x-www-form-urlencoded",
+//	        "Accept": "application/json",
+//	        "Access-Control-Allow-Origin": "*",
+//	        "Access-Control-Allow-Headers": "Cache-Control, Pragma, Origin, Authorization,   Content-Type, X-Requested-With",
+//	        "Access-Control-Allow-Methods": "GET, PUT, POST"} }
+//	    ).success(function (data,status,headers,congfig) {
+	    	
+	 $http({
+		         method: 'GET',
+		         url: 'http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report'
+		      }).success(function(data) {
 	    	
 	    	
 	    	defer.resolve(data);

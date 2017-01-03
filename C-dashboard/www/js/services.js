@@ -4,47 +4,42 @@ angular.module('starter.services', [])
   // Might use a resource here that returns a JSON array
 
 	
-	alert("chats");
+//	alert("chats");
   // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Bo',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
-  }];
+	  var chats = [{
+		    id: 0,
+		    name: 'Bo',
+		    lastText: 'Research Staff Member - DevOps',
+		    face: 'img/bo.png'
+		  }, {
+		    id: 1,
+		    name: 'Anca',
+		    lastText: 'Tech Lead - AppDev/PaaS Bluemix',
+		    face: 'img/anca.png'
+		  }, {
+		    id: 2,
+		    name: 'Yichong',
+		    lastText: 'Tech Lead - Operational Dashboard',
+		    face: 'img/yichong.png'
+		  }, {
+		    id: 3,
+		    name: 'Shubir',
+		    lastText: 'Development Manager - DevOps',
+		    face: 'img/shubir.png'
+		  }];
 
-  console.log("hello here222");
-	
-  console.log("hello webservice 123");
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report", true);
-	xhr.onreadystatechange = function() {
-  	if (xhr.readyState == 4) {
-    		alert(xhr.responseText);
-  	}
-	}
-	xhr.send();
- 
+//  console.log("hello here222");
+//	
+//  console.log("hello webservice 123");
+//	var xhr = new XMLHttpRequest();
+//	xhr.open("GET", "http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report", true);
+//	xhr.onreadystatechange = function() {
+//  	if (xhr.readyState == 4) {
+//    		alert(xhr.responseText);
+//  	}
+//	}
+//	xhr.send();
+// 
 	
   return {
     all: function() {

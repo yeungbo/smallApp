@@ -232,15 +232,15 @@ angular.module('starter.controllers', [])
   //});
 
 	
-		console.log("hello webservice 1111");
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report", true);
-		xhr.onreadystatechange = function() {
-	    	if (xhr.readyState == 4) {
-	      		alert(xhr.responseText);
-	    	}
-		}
-		xhr.send();
+//		console.log("hello webservice 1111");
+//		var xhr = new XMLHttpRequest();
+//		xhr.open("GET", "http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report", true);
+//		xhr.onreadystatechange = function() {
+//	    	if (xhr.readyState == 4) {
+//	      		alert(xhr.responseText);
+//	    	}
+//		}
+//		xhr.send();
 
 	  	  
   $scope.chats = Chats.all();

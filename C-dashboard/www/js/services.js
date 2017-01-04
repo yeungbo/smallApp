@@ -65,7 +65,7 @@ angular.module('starter.services', [])
 //	alert("accounts");
 	navigator.geolocation.getCurrentPosition( // 该函数有如下三个参数
 	        function(pos){ // 如果成果则执行该回调函数
-	            alert(
+	            console.log(
 	                '  经度：' + pos.coords.latitude +
 	                '  纬度：' + pos.coords.longitude +
 	                '  高度：' + pos.coords.altitude +

@@ -71,10 +71,60 @@ angular.module('starter.controllers', [])
 //	        "Access-Control-Allow-Headers": "Cache-Control, Pragma, Origin, Authorization,   Content-Type, X-Requested-With",
 //	        "Access-Control-Allow-Methods": "GET, PUT, POST"} }
 //	    ).success(function (data,status,headers,congfig) {
+	
+	navigator.geolocation.getCurrentPosition( // 该函数有如下三个参数
+	        function(pos){ // 如果成果则执行该回调函数
+	            console.log(
+	                '  经度：' + pos.coords.latitude +
+	                '  纬度：' + pos.coords.longitude +
+	                '  高度：' + pos.coords.altitude +
+	                '  精确度(经纬)：' + pos.coords.accuracy +
+	                '  精确度(高度)：' + pos.coords.altitudeAccuracy +
+	                '  速度：' + pos.coords.speed
+	            );
+	        }, function(err){ // 如果失败则执行该回调函数
+	            alert(err.message);
+	        }, { // 附带参数
+	            enableHighAccuracy: false, // 提高精度(耗费资源)
+	            timeout: 3000, // 超过timeout则调用失败的回调函数
+	            maximumAge: 1000 // 获取到的地理信息的有效期，超过有效期则重新获取一次位置信息
+	        }
+	    );
+	
+	
+	var lat="40.04925";
+	var lon="116.280727";
+	
+	navigator.geolocation.getCurrentPosition( // 该函数有如下三个参数
+	        function(pos){ // 如果成果则执行该回调函数
+	            console.log(
+	                '  经度：' + pos.coords.latitude +
+	                '  纬度：' + pos.coords.longitude +
+	                '  高度：' + pos.coords.altitude +
+	                '  精确度(经纬)：' + pos.coords.accuracy +
+	                '  精确度(高度)：' + pos.coords.altitudeAccuracy +
+	                '  速度：' + pos.coords.speed
+	            );
+	            lat = pos.coords.latitude;
+	            lon = pos.coords.longitude;
+	       
+	
+	console.log(">>>>>"+lat+" , "+lon);
+	
+	$http({
+        method: 'GET',
+        url: 'http://api.map.baidu.com/geocoder/v2/?location='+lat+','+lon+'&output=json&pois=0&ak=E5dymtVjzGhYRP2GRyKSu1fZNyz7a1Cb'
+     }).success(function(data0) {   
+	    	$msgdata0=angular.toJson(data0); 
 	    	
+	    	//////////////////
+	    	var json0 = JSON.parse($msgdata0); 
+	    	console.log("result:"+json0["result"]);
+    	 
+    	 
 	 $http({
 		         method: 'GET',
-		         url: 'http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report'
+		         url: 'http://open.91weather.com/api/plot_air?key=6350348f07d8443f9&lon='+lon+'&lat='+lat
 		      }).success(function(data) {
 	    	
 	    	
@@ -82,22 +132,40 @@ angular.module('starter.controllers', [])
 	    	$obj1 = angular.toJson(data); 
 	    	$msgdata=angular.toJson(data); 
 	    	
+	    	//////////////////
+	    	var json = JSON.parse($msgdata); 
+	    	
+//		      alert("success"+$msgdata);
+//		      alert("success"+data);
+//		      alert("success"+data.was);
+		      console.log("success:"+data);
+		      console.log("msgdata"+$msgdata);
+		      console.log("detail:"+json["detail"]);
+		      console.log(JSON.stringify(defer.promise));
+		  	
+		  	
+		      for(var key in json["detail"]){  
+		    		console.log(key);  
+		    		console.log(json["detail"][key]); 
+	          } 
+	    	/////////////////////
+	    	
 //	      alert("success"+$msgdata);
 //	      alert("success"+data);
 //	      alert("success"+data.was);
 	      
-	      var db2num = parseInt(data.db2);
-	      var wasnum = parseInt(data.was);
-	      var mongoDBnum = parseInt(data.mongoDB);
-	      
-	      var totalnum=db2num+wasnum+mongoDBnum;
-	      
-	      var db2share = (db2num/totalnum)*100;
-	      var wasshare = (wasnum/totalnum)*100;
-	      var mongodbshare = (mongoDBnum/totalnum)*100;
-	      console.log("db2:"+db2share)
-	      console.log("mongodbshare:"+mongodbshare)
-	      console.log("was:"+wasshare)
+//	      var db2num = parseInt(data.db2);
+//	      var wasnum = parseInt(data.was);
+//	      var mongoDBnum = parseInt(data.mongoDB);
+//	      
+//	      var totalnum=db2num+wasnum+mongoDBnum;
+//	      
+//	      var db2share = (db2num/totalnum)*100;
+//	      var wasshare = (wasnum/totalnum)*100;
+//	      var mongodbshare = (mongoDBnum/totalnum)*100;
+//	      console.log("db2:"+db2share)
+//	      console.log("mongodbshare:"+mongodbshare)
+//	      console.log("was:"+wasshare)
 	      
 	      
 //	      alert("defer"+ JSON.stringify(defer) );
@@ -106,43 +174,140 @@ angular.module('starter.controllers', [])
 	      //饼图
 	      $scope.chartPieConfig = {
 
-	       chart: {
-	                 plotBackgroundColor: null,
-	                 plotBorderWidth: null,
-	                 plotShadow: false
-	             },
-	             title: {
-	                 text: 'Browser resource usage at a specific environment, 2016'
-	             },
-	             tooltip: {
-	              pointFormat: '{series.name}bb: <b>{point.percentage:2.2f}%</b>'
-	             },
-	             plotOptions: {
-	                 pie: {
-	                     allowPointSelect: true,
-	                     cursor: 'pointer',
-	                     dataLabels: {
-	                         enabled: true,
-	                         color: '#000000',
-	                         connectorColor: '#000000',
-	                         format: '<b>{point.name}cc</b>: {point.percentage:1.1f} %'
-	                     }
-	                 }
-	             },
-	             series: [{
-	                 type: 'pie',
-	                 name: 'Browser share',
-	                 data: [
-	                     ['DB2',   db2share],
-	                     ['WAS',       wasshare],
-	                     {
-	                         name: 'MongoDB',
-	                         y: mongodbshare,
-	                         sliced: true,
-	                         selected: true
-	                     }
-	                 ]
-	             }]
+//	       chart: {
+//	                 plotBackgroundColor: null,
+//	                 plotBorderWidth: null,
+//	                 plotShadow: false
+//	             },
+//	             title: {
+//	                 text: 'Browser resource usage at a specific environment, 2016'
+//	             },
+//	             tooltip: {
+//	              pointFormat: '{series.name}bb: <b>{point.percentage:2.2f}%</b>'
+//	             },
+//	             plotOptions: {
+//	                 pie: {
+//	                     allowPointSelect: true,
+//	                     cursor: 'pointer',
+//	                     dataLabels: {
+//	                         enabled: true,
+//	                         color: '#000000',
+//	                         connectorColor: '#000000',
+//	                         format: '<b>{point.name}cc</b>: {point.percentage:1.1f} %'
+//	                     }
+//	                 }
+//	             },
+//	             series: [{
+//	                 type: 'pie',
+//	                 name: 'Browser share',
+//	                 data: [
+//	                     ['DB2',   db2share],
+//	                     ['WAS',       wasshare],
+//	                     {
+//	                         name: 'MongoDB',
+//	                         y: mongodbshare,
+//	                         sliced: true,
+//	                         selected: true
+//	                     }
+//	                 ]
+//	             }]
+	    	  
+	    	  
+	    	  
+	    	  /////////////////////////////////////////////
+	    	  //饼图
+		  	
+
+		  				 chart: {
+		  			            type: 'column'
+		  			        },
+		  			        title: {
+		  			            text: '空气质量排行榜'
+		  			        },		      
+		  			        xAxis: {
+		  			            type: 'category'
+		  			        },
+		  			        yAxis: {
+		  			            title: {
+		  			                text: 'TS'
+		  			            }
+
+		  			        },
+		  			        legend: {
+		  			            enabled: false
+		  			        },
+		  			        plotOptions: {
+		  			            series: {
+		  			                borderWidth: 0,
+		  			                dataLabels: {
+		  			                    enabled: true,
+		  			                    format: '{point.y:.1f}%'
+		  			                }
+		  			            }
+		  			        },
+
+		  			        tooltip: {
+		  			            headerFormat: '<span style="font-size:8px">{series.name}</span><br>',
+		  			            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1}%</b> of total<br/>'
+		  			        },
+
+		  			        series: [{
+		  			            name: 'AQI',
+		  			            colorByPoint: true,
+		  			            data: (function () {
+		  		                    // generate an array of random data
+		  		                    var data = [];
+//		  		                    for(var key in json["detail"]){  
+//			  		                    data.push({
+//				                        	name: key,
+//				                            y: parseFloat(json["detail"][key]),
+//				                            drilldown: null
+//				                        });
+//		  		                    }
+		  		                    data.push({
+		  		                    	name: "PM2.5",
+		  		                    	y: parseFloat(json["detail"]["p25"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    data.push({
+		  		                    	name: "PM10",
+		  		                    	y: parseFloat(json["detail"]["p10"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    data.push({
+		  		                    	name: "AQI",
+		  		                    	y: parseFloat(json["detail"]["aqi"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    data.push({
+		  		                    	name: "二氧化硫",
+		  		                    	y: parseFloat(json["detail"]["s"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    data.push({
+		  		                    	name: "一氧化碳",
+		  		                    	y: parseFloat(json["detail"]["c"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    data.push({
+		  		                    	name: "一氧化氮",
+		  		                    	y: parseFloat(json["detail"]["n"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    data.push({
+		  		                    	name: "臭氧",
+		  		                    	y: parseFloat(json["detail"]["o"]),
+		  		                    	drilldown: null		  		                    	
+		  		                    });
+		  		                    
+		  		                    var $jdata=angular.toJson(data); 
+		  		                    console.log(data);
+		  		                    console.log($jdata);
+		  		                    return data;
+		  		                }())
+		  			        }]  	
+		  	
+	    	  //////////////////////////////////////////////
 	      };
 	      /////////////////////////////
 	      
@@ -151,6 +316,23 @@ angular.module('starter.controllers', [])
 	    	defer.reject(data);
 	      alert("登录出错" + data + "  " + status);
 	    });
+	 
+	 
+	 return $msgdata0;
+	    }).error(function(data, status, headers, config){	
+	    	defer.reject(data);
+	      alert("登录出错" + data + "  " + status);
+	    });
+	 
+	        }, function(err){ // 如果失败则执行该回调函数
+	            alert(err.message);
+	        }, { // 附带参数
+	            enableHighAccuracy: false, // 提高精度(耗费资源)
+	            timeout: 3000, // 超过timeout则调用失败的回调函数
+	            maximumAge: 1000 // 获取到的地理信息的有效期，超过有效期则重新获取一次位置信息
+	        }
+	    );
+	
 	console.log(JSON.stringify(defer.promise));
 	
 	
@@ -258,54 +440,200 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope, Accounts) {
+.controller('AccountCtrl', function($scope, $http, $q, Accounts) {
 //	alert("AccountCtrl");
 	
 	
-	  //饼图
-	 $scope.vlanPieConfig = {
+	var defer = $q.defer();
+//	$http.get('http://cap-sg-prd-4.integration.ibmcloud.com:16763/mfp/api/adapters/javaAdapter/resource/report', {
+//	    	headers: {"Content-Type": "application/x-www-form-urlencoded",
+//	        "Accept": "application/json",
+//	        "Access-Control-Allow-Origin": "*",
+//	        "Access-Control-Allow-Headers": "Cache-Control, Pragma, Origin, Authorization,   Content-Type, X-Requested-With",
+//	        "Access-Control-Allow-Methods": "GET, PUT, POST"} }
+//	    ).success(function (data,status,headers,congfig) {
+	console.log("==========>");   	
+	 $http({
+		         method: 'GET',
+		         url: 'http://9.1.34.205:8070/wumai'
+		      }).success(function(data) {
+	    	
+	    	
+	    	defer.resolve(data);
+	    	
+	    	var smsTypeDesc = {"4":"回访短信","3":"邮件短信","aa":"测试短信"}; 
+	    	var obj1 = angular.toJson(data); 
+	    	var $msgdata=angular.toJson(data); 
+	    	
+	    	var json = JSON.parse($msgdata); 
+	    	
+//	      alert("success"+$msgdata);
+//	      alert("success"+data);
+//	      alert("success"+data.was);
+	    	for(var key in smsTypeDesc){  
+	    		console.log(key);  
+	    		console.log(smsTypeDesc[key]); 
+            } 
+	      console.log("success:"+data);
+	      console.log("msgdata"+$msgdata);
+	      console.log(JSON.stringify(defer.promise));
+	  	
+	  	
+	      for(var key in json){  
+	    		console.log(key);  
+	    		console.log(json[key]); 
+          } 
+	      
+//	      obj1 = eval(obj1.options)  
+//	      for(var i=0; i<obj1.length; i++)  
+//	      {  
+//	         console(obj1[i].text+" " + obj1[i].value)  
+//	      } 
+	      
+	  		console.log(defer.promise);
+	      
+//	      alert("defer"+ JSON.stringify(defer) );
+	      
+	      ///////////////////////////
+	      //饼图
+	     
+	  		
+	  	  //饼图
+	  		 $scope.vlanPieConfig = {
+
+	  				 chart: {
+	  			            type: 'column'
+	  			        },
+	  			        title: {
+	  			            text: '空气质量排行榜'
+	  			        },		      
+	  			        xAxis: {
+	  			            type: 'category'
+	  			        },
+	  			        yAxis: {
+	  			            title: {
+	  			                text: 'TS'
+	  			            }
+
+	  			        },
+	  			        legend: {
+	  			            enabled: false
+	  			        },
+	  			        plotOptions: {
+	  			            series: {
+	  			                borderWidth: 0,
+	  			                dataLabels: {
+	  			                    enabled: true,
+	  			                    format: '{point.y:.1f}%'
+	  			                }
+	  			            }
+	  			        },
+
+	  			        tooltip: {
+	  			            headerFormat: '<span style="font-size:8px">{series.name}</span><br>',
+	  			            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1}%</b> of total<br/>'
+	  			        },
+
+	  			        series: [{
+	  			            name: 'AQI',
+	  			            colorByPoint: true,
+	  			            data: (function () {
+	  		                    // generate an array of random data
+	  		                    var data = [];
+	  		                    for(var key in json){  
+		  		                    data.push({
+			                        	name: key,
+			                            y: parseFloat(json[key]),
+			                            drilldown: null
+			                        });
+	  		                    }
+	  		                    var $jdata=angular.toJson(data); 
+	  		                    console.log(data);
+	  		                    console.log($jdata);
+	  		                    return data;
+	  		                }())
+	  			        }]  	
+	  		 };
+	      /////////////////////////////
+	      
+	      return $msgdata;
+	    }).error(function(data, status, headers, config){	
+	    	defer.reject(data);
+	      alert("登录出错" + data + "  " + status);
+	    });
 	
-	  chart: {
-	            plotBackgroundColor: null,
-	            plotBorderWidth: null,
-	            plotShadow: false
-	        },
-	        title: {
-	            text: 'Browser resource usage at a specific environment, 2016'
-	        },
-	        tooltip: {
-	         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-	        },
-	        plotOptions: {
-	            pie: {
-	                allowPointSelect: true,
-	                cursor: 'pointer',
-	                dataLabels: {
-	                    enabled: true,
-	                    color: '#000000',
-	                    connectorColor: '#000000',
-	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-	                }
-	            }
-	        },
-	        series: [{
-	            type: 'pie',
-	            name: 'Browser share',
-	            data: [
-	                ['Firefox',   45.0],
-	                ['IE',       26.8],
-	                {
-	                    name: 'Chrome',
-	                    y: 12.8,
-	                    sliced: true,
-	                    selected: true
-	                },
-	                ['Safari',    8.5],
-	                ['Opera',     6.2],
-	                ['Others',   0.7]
-	            ]
-	        }]
-	 };
+//	  //饼图
+//	 $scope.vlanPieConfig = {
+//
+//			 chart: {
+//		            type: 'column'
+//		        },
+//		        title: {
+//		            text: '雾霾排名'
+//		        },		      
+//		        xAxis: {
+//		            type: 'category'
+//		        },
+//		        yAxis: {
+//		            title: {
+//		                text: 'TS'
+//		            }
+//
+//		        },
+//		        legend: {
+//		            enabled: false
+//		        },
+//		        plotOptions: {
+//		            series: {
+//		                borderWidth: 0,
+//		                dataLabels: {
+//		                    enabled: true,
+//		                    format: '{point.y:.1f}%'
+//		                }
+//		            }
+//		        },
+//
+//		        tooltip: {
+//		            headerFormat: '<span style="font-size:8px">{series.name}</span><br>',
+//		            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1}%</b> of total<br/>'
+//		        },
+//
+//		        series: [{
+//		            name: 'Brands',
+//		            colorByPoint: true,
+//		            data: 
+//		            	
+//		            	
+//		            	[{
+//		                "name": "北京",
+//		                "y": 25,
+//		                "drilldown": null
+//		            }, {
+//		                "name": "上海",
+//		                "y": 4.03,
+//		                drilldown: null
+//		            }, {
+//		                name: 'Firefox',
+//		                y: 10.38,
+//		                drilldown: null
+//		            }, {
+//		                name: 'Safari',
+//		                y: 4.77,
+//		                drilldown: null
+//		            }, {
+//		                name: 'Opera',
+//		                y: 0.91,
+//		                drilldown: null
+//		            }, {
+//		                name: 'Pro',
+//		                y: 0.2,
+//		                drilldown: null
+//		            }]
+//		        }]
+//	 };
+//	 
+	 
+	 ////////////////////////////////////////////////////////
 //	  Accounts.all($http).success(function(data) {
 //		  	$scope.accounts = data
 //		  	alert("ii:"+$scope.accounts);

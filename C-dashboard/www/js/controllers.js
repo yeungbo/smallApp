@@ -1,6 +1,17 @@
 angular.module('starter.controllers', [])
+.constant('GeoEndpoint',{
+	url: 'http://192.168.1.46:8080/geocoder'
+})
 
-.controller('DashCtrl', function($scope, $http, $q) {
+.constant('WeaEndpoint',{
+	url: 'http://192.168.1.46:8080/api'
+})
+
+.constant('DataEndpoint',{
+	url: 'http://192.168.1.46:8080/data'
+})
+
+.controller('DashCtrl', function($scope, $http, $q, GeoEndpoint, WeaEndpoint) {
 
   //xxxx占比
     // xxxxxxService.getOrderConfCount().then(function(response) {
@@ -113,7 +124,7 @@ angular.module('starter.controllers', [])
 	
 	$http({
         method: 'GET',
-        url: 'http://api.map.baidu.com/geocoder/v2/?location='+lat+','+lon+'&output=json&pois=0&ak=E5dymtVjzGhYRP2GRyKSu1fZNyz7a1Cb'
+        url: GeoEndpoint.url + '/v2/?location='+lat+','+lon+'&output=json&pois=0&ak=E5dymtVjzGhYRP2GRyKSu1fZNyz7a1Cb'
      }).success(function(data0) {   
 	    	$msgdata0=angular.toJson(data0); 
 	    	
@@ -124,7 +135,7 @@ angular.module('starter.controllers', [])
     	 
 	 $http({
 		         method: 'GET',
-		         url: 'http://open.91weather.com/api/plot_air?key=6350348f07d8443f9&lon='+lon+'&lat='+lat
+		         url: WeaEndpoint.url + '/plot_air?key=d6a7c8269add44009&lon='+lon+'&lat='+lat
 		      }).success(function(data) {
 	    	
 	    	
@@ -314,18 +325,18 @@ angular.module('starter.controllers', [])
 	      return $msgdata;
 	    }).error(function(data, status, headers, config){	
 	    	defer.reject(data);
-	      alert("登录出错" + data + "  " + status);
+	      console.log("登录出错" + data + "  " + status);
 	    });
 	 
 	 
 	 return $msgdata0;
 	    }).error(function(data, status, headers, config){	
 	    	defer.reject(data);
-	      alert("登录出错" + data + "  " + status);
+	      console.log("登录出错" + data + "  " + status);
 	    });
 	 
 	        }, function(err){ // 如果失败则执行该回调函数
-	            alert(err.message);
+	            console.log(err.message);
 	        }, { // 附带参数
 	            enableHighAccuracy: false, // 提高精度(耗费资源)
 	            timeout: 3000, // 超过timeout则调用失败的回调函数
@@ -440,7 +451,7 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope, $http, $q, Accounts) {
+.controller('AccountCtrl', function($scope, $http, $q, Accounts, DataEndpoint) {
 //	alert("AccountCtrl");
 	
 	
@@ -455,7 +466,7 @@ angular.module('starter.controllers', [])
 	console.log("==========>");   	
 	 $http({
 		         method: 'GET',
-		         url: 'http://9.1.34.205:8070/wumai'
+		         url: DataEndpoint.url + '/wumai'
 		      }).success(function(data) {
 	    	
 	    	
